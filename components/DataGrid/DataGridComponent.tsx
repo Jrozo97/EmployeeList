@@ -52,6 +52,7 @@ export const DataGridComponent = () => {
   return (
     <div className={styles.container}>
       <DataGrid
+      style={{border: "none"}}
         columns={[
           { field: "name", headerName: "Nombre", flex: 1 },
           { field: "hobbies", headerName: "Pasatiempos", flex: 1 },
