@@ -1,12 +1,12 @@
-import { DataGrid, GridSelectionModel, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DataUser } from "../../interface/dataUser.interface";
 import { feature } from "@ideditor/country-coder";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { fetchUsers, selectAllUsers } from "../../slice/usersSlice";
-import { store } from "../../store/store";
 import { selectAllSelected, setArray } from "../../slice/selectedSlice";
-import { useDispatch } from "react-redux";
+import { store } from "../../store/store";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import styles from "./DataGrid.module.css";
 
 export function transformUserData(listUser: DataUser[]): DataUser[] {
   const monthNames = [
@@ -31,7 +31,10 @@ export function transformUserData(listUser: DataUser[]): DataUser[] {
       age: new Date().getFullYear() - new Date(user.birthday).getFullYear(),
       birthday_date: new Date(user.birthday).toLocaleDateString(),
       month_birthday: monthNames[new Date(user.birthday).getMonth()],
-      country: feature([user.longitude, user.latitude])?.properties.nameEn,
+      country:
+        feature([user.longitude, user.latitude])?.properties.nameEn === undefined
+          ? "Ubicación no encontrada"
+          : feature([user.longitude, user.latitude])?.properties.nameEn,
     };
   });
 }
@@ -47,7 +50,7 @@ export const DataGridComponent = () => {
   const user = useSelector(selectAllUsers);
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div className={styles.container}>
       <DataGrid
         columns={[
           { field: "name", headerName: "Nombre", flex: 1 },

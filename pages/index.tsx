@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { selectAllUsers } from "../slice/usersSlice";
 import { selectAllSelected } from "../slice/selectedSlice";
 import { Message } from "../interface/dataUser.interface";
+import SendIcon from "@mui/icons-material/Send";
 
 export default function Home() {
   const [listMessage, setListMessage] = useState<Message[]>([]);
@@ -49,20 +50,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="main">
-        <h1>Lista de empleados</h1>
-        <DataGridComponent />
-      </div>
+      <h1 className={styles.title}>Lista de empleados</h1>
+      <DataGridComponent />
       {selectionModel.length > 0 && (
-        <button onClick={generateMessages}>Generar mensajes</button>
+        <button className={styles.bbtnGenerate} onClick={generateMessages}>
+          Generar mensajes
+        </button>
       )}
       {listMessage.length > 0 &&
         selectionModel.length > 0 &&
         listMessage.map((message, it) => {
           return (
-            <div key={it}>
-              <p>{message.message}</p>
-              <a href={`mailto:${message.email}?subject=Feliz Cumpleaños&body=${message.message}`}>Enviar email</a>
+            <div className={styles.containerInfo} key={it}>
+              <p className={styles.infoDescription}>{message.message}</p>
+              <div className={styles.sendMail}>
+                <a
+                  href={`mailto:${message.email}?subject=Feliz Cumpleaños&body=${message.message}`}
+                >
+                  Enviar email
+                </a>
+                <SendIcon />
+              </div>
             </div>
           );
         })}
